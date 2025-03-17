@@ -1,0 +1,78 @@
+import "hashes/sha256/sha256Padded" as sha256Padded;
+import "utils/casts/u32_to_bits" as u32_to_bits;
+import "utils/casts/u8_from_bits" as u8_from_bits;
+
+def u32_to_u8_array(u32 value) -> u8[4] {
+    bool[32] bits = u32_to_bits(value);
+    return [
+        u8_from_bits(bits[0..8]),
+        u8_from_bits(bits[8..16]),
+        u8_from_bits(bits[16..24]),
+        u8_from_bits(bits[24..32])
+    ];
+}
+
+def hash_value(u32 value) -> u32[8] {
+    u8[4] value_bytes = u32_to_u8_array(value);
+    return sha256Padded(value_bytes);
+}
+
+def concatenate_and_hash(u32[8] hash1, u32[8] hash2) -> u32[8] {
+    u8[64] mut combined = [0; 64]; // Save the concatenated hashes
+
+    bool swap = hash1[0] > hash2[0];
+    u32[8] first = swap ? hash2 : hash1;
+    u32[8] second = swap ? hash1 : hash2;
+
+    for u32 i in 0..8 {
+        u8[4] bytes1 = u32_to_u8_array(first[i]);
+        u8[4] bytes2 = u32_to_u8_array(second[i]);
+
+        for u32 j in 0..4 {
+            combined[i * 4 + j] = bytes1[j];      // Llena los primeros 32 bytes
+            combined[32 + (i * 4) + j] = bytes2[j]; // Llena los últimos 32 bytes
+        }
+    }
+
+    return sha256Padded(combined);
+}
+
+
+def u32_array_to_u8_array(u32[8] input) -> u8[32] {
+    u8[32] mut output = [0; 32];
+    
+    for u32 i in 0..8 {
+        u8[4] bytes = u32_to_u8_array(input[i]);
+
+        for u32 j in 0..4 {
+            output[i * 4 + j] = bytes[j];
+        }
+    }
+
+    return output;
+}
+
+def main(
+    private u32 value1, 
+    private u32 value2, 
+    private u32 value3,  // Timestamp
+    private u32[8] nonceHash,  // This have been get from solidity
+    u32[8] expectedMerkleRoot
+) -> bool {
+    u32[8] hash1 = hash_value(value1);
+    u32[8] hash2 = hash_value(value2);
+    u32[8] hashA = concatenate_and_hash(hash1, hash2);
+
+    u8[32] nonceHashBytes = u32_array_to_u8_array(nonceHash);
+    u32[8] nonceHashed = sha256Padded(nonceHashBytes); 
+    u32[8] hash3 = hash_value(value3);
+    u32[8] hashB = concatenate_and_hash(hash3, nonceHashed);
+
+    u32[8] finalMerkleRoot = concatenate_and_hash(hashA, hashB);
+
+    for u32 i in 0..8 {
+        assert(finalMerkleRoot[i] == expectedMerkleRoot[i]);
+    }
+
+    return true;
+}
