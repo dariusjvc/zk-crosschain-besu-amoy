@@ -26,7 +26,7 @@ describe("AmoyBridge Performance Test", function () {
   });
 
   it("Should measure gas and execution time for mintTokens (including verifyTx)", async function () {
-    // 🔹 Read `proof.json`
+    // Read `proof.json`
     const proofData = JSON.parse(fs.readFileSync("proof.json", "utf8"));
 
     const proof = {
@@ -48,7 +48,7 @@ describe("AmoyBridge Performance Test", function () {
       console.log(` Total execution time (mintTokens including verifyTx): ${end - start} ms`);
       console.log(` Total gas used: ${receipt.gasUsed.toString()}`);
 
-      // 🛠️ Fetch the gas price manually
+      // Fetch the gas price manually
       const feeData = await ethers.provider.getFeeData();
 const gasPrice = feeData.gasPrice; // 
 
