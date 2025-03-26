@@ -1,0 +1,109 @@
+import "hashes/sha256/sha256Padded" as sha256Padded;
+import "utils/casts/u32_to_bits" as u32_to_bits;
+import "utils/casts/u8_from_bits" as u8_from_bits;
+
+// Constante M (ajustar según necesidades)
+const u32 M = 1000; 
+
+// Convertir `u32` a `u8[4]`
+def u32_to_u8_array(u32 value) -> u8[4] {
+    bool[32] bits = u32_to_bits(value);
+    return [
+        u8_from_bits(bits[0..8]),
+        u8_from_bits(bits[8..16]),
+        u8_from_bits(bits[16..24]),
+        u8_from_bits(bits[24..32])
+    ];
+}
+
+// Hash de un valor individual con SHA-256
+def hash_value(u32 value) -> u32[8] {
+    u8[4] value_bytes = u32_to_u8_array(value);
+    return sha256Padded(value_bytes);
+}
+
+// Función para extraer A e I desde value1 (C) y devolver un array en lugar de una tupla
+def extract_A_I(u32 C) -> u32[2] {
+    return [C / M, C % M];  // Retorna un array en lugar de una tupla
+}
+
+// Concatenar dos hashes en orden lexicográfico
+def concatenate_and_hash(u32[8] hash1, u32[8] hash2) -> u32[8] {
+    u8[64] mut combined = [0; 64]; // Almacenar los hashes concatenados
+
+    // Orden lexicográfico (garantiza que el orden siempre sea el mismo)
+    bool swap = hash1[0] > hash2[0];
+    u32[8] first = swap ? hash2 : hash1;
+    u32[8] second = swap ? hash1 : hash2;
+
+    // Convertimos los hashes a `u8[64]` concatenado
+    for u32 i in 0..8 {
+        u8[4] bytes1 = u32_to_u8_array(first[i]);
+        u8[4] bytes2 = u32_to_u8_array(second[i]);
+
+        for u32 j in 0..4 {
+            combined[i * 4 + j] = bytes1[j];      // Llena los primeros 32 bytes
+            combined[32 + (i * 4) + j] = bytes2[j]; // Llena los últimos 32 bytes
+        }
+    }
+
+    // Hasheamos la concatenación para obtener el hash final
+    return sha256Padded(combined);
+}
+
+// Convertir un array `u32[8]` a `u8[32]`
+def u32_array_to_u8_array(u32[8] input) -> u8[32] {
+    u8[32] mut output = [0; 32];
+    
+    for u32 i in 0..8 {
+        u8[4] bytes = u32_to_u8_array(input[i]);
+
+        for u32 j in 0..4 {
+            output[i * 4 + j] = bytes[j];
+        }
+    }
+
+    return output;
+}
+
+// Calcular el Merkle Root desde `value1`, `value2`, `value3` (timestamp) y `nonceHash`
+def main(
+    public u32 value1,  // Constan C
+    private u32 value2,  // BlockNumber
+    private u32 value3,  // Timestamp
+    private u32[8] nonceHash,  // Recibido de Solidity
+    u32[8] expectedMerkleRoot
+) -> u32[3] {
+    // Hashear `value1` y `value2`
+    u32[8] hash1 = hash_value(value1);
+    u32[8] hash2 = hash_value(value2);
+    u32[8] hashA = concatenate_and_hash(hash1, hash2);
+
+    // Extraer `A` e `I` usando un array en lugar de una tupla
+    u32[2] extracted_values = extract_A_I(value1);
+    public u32 extracted_A = extracted_values[0]; // Primer valor
+    public u32 extracted_I = extracted_values[1]; // Segundo valor
+
+    // Convertir `nonceHash` en bytes y calcular su hash
+    u8[32] nonceHashBytes = u32_array_to_u8_array(nonceHash);
+    u32[8] nonceHashed = sha256Padded(nonceHashBytes);
+
+    // Hashear `value3` (timestamp) y `nonceHash`
+    u32[8] hash3 = hash_value(value3);
+    u32[8] hashB = concatenate_and_hash(hash3, nonceHashed);
+
+    // Obtener el Merkle Root final
+    u32[8] finalMerkleRoot = concatenate_and_hash(hashA, hashB);
+
+    // Variable de control para determinar si el Merkle Root es válido
+    public u32 valid = 1; // Si el assert no falla, esto queda en 1
+
+    // Verificar que el Merkle Root calculado coincide con el recibido
+    for u32 i in 0..8 {
+        assert(finalMerkleRoot[i] == expectedMerkleRoot[i]); // Si falla, el circuito se aborta
+    }
+
+    // Si la verificación es exitosa, devolver [1, A, I], de lo contrario, el programa se aborta
+    return [valid, extracted_A, extracted_I];
+}
+

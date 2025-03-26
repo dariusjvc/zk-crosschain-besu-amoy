@@ -29,8 +29,8 @@ def concatenate_and_hash(u32[8] hash1, u32[8] hash2) -> u32[8] {
         u8[4] bytes2 = u32_to_u8_array(second[i]);
 
         for u32 j in 0..4 {
-            combined[i * 4 + j] = bytes1[j];      // Llena los primeros 32 bytes
-            combined[32 + (i * 4) + j] = bytes2[j]; // Llena los últimos 32 bytes
+            combined[i * 4 + j] = bytes1[j];      
+            combined[32 + (i * 4) + j] = bytes2[j]; 
         }
     }
 
@@ -53,8 +53,8 @@ def u32_array_to_u8_array(u32[8] input) -> u8[32] {
 }
 
 def main(
-    private u32 value1, 
-    private u32 value2, 
+    private u32 value1, //EncryptedData
+    private u32 value2, //BlockNumber
     private u32 value3,  // Timestamp
     private u32[8] nonceHash,  // This have been get from solidity
     u32[8] expectedMerkleRoot
