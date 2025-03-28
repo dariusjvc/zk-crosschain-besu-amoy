@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    {
+      "name": "value1",
+      "public": false,
+      "type": "u32"
+    },
+    {
+      "name": "value2",
+      "public": false,
+      "type": "u32"
+    },
+    {
+      "name": "value3",
+      "public": false,
+      "type": "u32"
+    },
+    {
+      "name": "nonceHash",
+      "public": false,
+      "type": "array",
+      "components": {
+        "size": 8,
+        "type": "u32"
+      }
+    },
+    {
+      "name": "expectedMerkleRoot",
+      "public": true,
+      "type": "array",
+      "components": {
+        "size": 8,
+        "type": "u32"
+      }
+    }
+  ],
+  "output": {
+    "type": "bool"
+  }
+}
