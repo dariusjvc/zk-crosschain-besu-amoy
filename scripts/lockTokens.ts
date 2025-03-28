@@ -12,13 +12,13 @@ async function lockTokens(amount: string) {
         "function lockTokens(uint256 amount) external"
     ];
 
-    const besuBridge = new ethers.Contract("0x311Ab7A24412cfc9e110A8ac17dFFbFf60EccDCE", besuBridgeABI, signerBesu);
+    const besuBridgeAddress = new ethers.Contract("0x311Ab7A24412cfc9e110A8ac17dFFbFf60EccDCE", besuBridgeABI, signerBesu);
 
     console.log(`Locking ${amount} tokens in Besu`);
 
     try {
         const amountBigInt = BigInt(amount);
-        const tx = await besuBridge.lockTokens(amountBigInt);
+        const tx = await besuBridgeAddress.lockTokens(amountBigInt);
         await tx.wait();
         console.log(`tx hash: ${tx.hash}`);
         console.log(`${amount} locked tokens in Besu`);
