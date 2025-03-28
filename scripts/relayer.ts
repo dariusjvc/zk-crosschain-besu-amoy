@@ -39,13 +39,13 @@ const signerBesu = new ethers.Wallet(process.env.BESU_PRIVATE_KEY!, providerBesu
 
 const besuBridgeABI = besuBridgeArtifact.abi;
 
-const besuBridgeAddress = "0x311Ab7A24412cfc9e110A8ac17dFFbFf60EccDCE";
+const besuBridgeAddress = "<BESU_BRIDGE_ADDRESS_HERE>";
 const besuBridge = new ethers.Contract(besuBridgeAddress, besuBridgeABI, signerBesu);
 
 // Amoy Connection
 const amoyProvider = new ethers.JsonRpcProvider(process.env.AMOY_RPC_URL);
 const signerAmoy = new ethers.Wallet(process.env.AMOY_PRIVATE_KEY!, amoyProvider);
-const amoyBridgeAddress = "0xCc0e2077a274c0F34b413609AE885910a13F5243";
+const amoyBridgeAddress = "AMOY_BRIDGE_ADDRESS_HERE";
 
 const amoyBridgeABI = amoyBridgeArtifact.abi;
 const amoyBridge = new ethers.Contract(amoyBridgeAddress, amoyBridgeABI, signerAmoy);
