@@ -84,6 +84,7 @@ This script listens to lock events on Besu and relays zk-proofs to Amoy.
 ---
 
 ### 6. Trigger a Lock Event (Besu)
+Update the `besuBridgeAddress`.
 
 To simulate a token lock on Besu, run:
 
