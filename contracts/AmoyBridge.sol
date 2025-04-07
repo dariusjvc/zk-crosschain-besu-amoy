@@ -1,7 +1,7 @@
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./AmoyTraceToken.sol";
-import "./verifier.sol"; // Importamos el contrato Verifier
+import "./verifier.sol";
 
 contract AmoyBridge is ERC1155Holder, Ownable {
     uint256 public constant TRACE_TOKEN_ID = 1;
