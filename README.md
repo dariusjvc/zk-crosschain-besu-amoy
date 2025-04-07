@@ -9,8 +9,7 @@ It demonstrates how **zero-knowledge proofs** can be used to securely bridge tok
 
 - `node v20.18.2`
 - `ZoKrates v0.8.8`
-- `ts-node`, `dotenv`, and `ethers v6`
-- Docker (for running Besu, optional)
+- Docker (for running Besu)
 - A wallet with ETH on Amoy testnet (e.g. via [Polygon Faucet](https://faucet.polygon.technology/))
 
 ---
