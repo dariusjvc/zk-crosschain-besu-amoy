@@ -4,6 +4,9 @@ ZOKRATES_DIR="$(dirname "$0")"  # Get the directory where the script is located
 ROOT_DIR="$(dirname "$(dirname "$0")")"
 
 echo "Compiling ZoKrates circuit..."
+
+mkdir $ZOKRATES_DIR/artifacts
+
 zokrates compile -i "$ZOKRATES_DIR/circuits/lock_proof.zok" -o "$ZOKRATES_DIR/artifacts/lock_proof"
 
 echo "Setting up ZoKrates proving and verification keys..."
