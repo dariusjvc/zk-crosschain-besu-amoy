@@ -59,7 +59,12 @@ Then **copy the generated `verifier.sol`** file to your `contracts/` directory.
 ### 4. Deploy Smart Contracts
 
 To deploy **BesuBridge**, **BesuTraceToken**, **AmoyBridge**, **AmoyTraceToken**, and **Verifier**, run:
-
+```bash
+npm install
+```
+```bash
+npx hardhat compile
+```
 ```bash
 npx ts-node scripts/deployAll.ts
 ```
