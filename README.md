@@ -29,6 +29,7 @@ AMOY_PRIVATE_KEY=<YOUR_AMOY_PRIVATE_KEY>
 ```
 
 >_The same private key/account must be used on both Besu and Amoy._
+>_Amoy Faucet: You can request test POLs (Polygon tokens) for your Amoy account from the Amoy Faucet to ensure you have sufficient funds to deploy and interact with contracts._
 
 ---
 
