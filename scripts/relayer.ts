@@ -45,7 +45,7 @@ const besuBridge = new ethers.Contract(besuBridgeAddress, besuBridgeABI, signerB
 // Amoy Connection
 const amoyProvider = new ethers.JsonRpcProvider(process.env.AMOY_RPC_URL);
 const signerAmoy = new ethers.Wallet(process.env.AMOY_PRIVATE_KEY!, amoyProvider);
-const amoyBridgeAddress = "AMOY_BRIDGE_ADDRESS_HERE";
+const amoyBridgeAddress = "<AMOY_BRIDGE_ADDRESS_HERE>";
 
 const amoyBridgeABI = amoyBridgeArtifact.abi;
 const amoyBridge = new ethers.Contract(amoyBridgeAddress, amoyBridgeABI, signerAmoy);
