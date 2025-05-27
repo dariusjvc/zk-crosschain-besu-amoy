@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ZOKRATES_DIR="$(dirname "$0")"  # Get the directory where the script is located
+ROOT_DIR="$(dirname "$(dirname "$0")")"
 
 echo "Compiling ZoKrates circuit..."
 zokrates compile -i "$ZOKRATES_DIR/circuits/lock_proof.zok" -o "$ZOKRATES_DIR/artifacts/lock_proof"
@@ -17,6 +18,6 @@ fi
 echo "Exporting Solidity verifier..."
 #echo "$ZOKRATES_DIR/artifacts/verification.key"
 #cat "$ZOKRATES_DIR/artifacts/verification.key"
-zokrates export-verifier -i "$ZOKRATES_DIR/artifacts/verification.key" -o "$ZOKRATES_DIR/artifacts/verifier.sol"
+zokrates export-verifier -i "$ZOKRATES_DIR/artifacts/verification.key" -o "$ROOT_DIR/contracts/verifier.sol"
 
 echo "Compilation completed successfully!"
