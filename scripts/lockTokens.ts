@@ -12,7 +12,7 @@ async function lockTokens(amount: string) {
         "function lockTokens(uint256 amount) external"
     ];
 
-    const besuBridgeAddress = new ethers.Contract("BESU_BRIDGE_ADDRESS_HERE", besuBridgeABI, signerBesu);
+    const besuBridgeAddress = new ethers.Contract("<BESU_BRIDGE_ADDRESS_HERE>", besuBridgeABI, signerBesu);
 
     console.log(`Locking ${amount} tokens in Besu`);
 
