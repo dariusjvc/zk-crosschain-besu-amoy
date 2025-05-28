@@ -106,11 +106,6 @@ async function deployAll() {
   const amoyBridgeAddress = await amoyBridge.getAddress();
   console.log(`AmoyBridge deployed at: ${amoyBridgeAddress}`);
 
-  console.log("Starting Relayer...");
-
-  const besuBridgeContract = new ethers.Contract(besuBridgeAddress, besuBridgeArtifact.abi, signerBesu);
-  const amoyBridgeContract = new ethers.Contract(amoyBridgeAddress, amoyBridgeArtifact.abi, signerAmoy);
-
 }
 
 deployAll().catch((error) => {
