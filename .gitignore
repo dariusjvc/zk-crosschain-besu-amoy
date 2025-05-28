@@ -20,7 +20,8 @@ ignition/deployments/chain-31337
 package-lock.json
 
 abi.json
-
 out.r1cs
-
+out.wtns
+witness
+proof.json
 zokrates/artifacts/*
