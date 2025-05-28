@@ -92,7 +92,7 @@ This script listens to lock events on Besu and relays zk-proofs to Amoy.
 ### 6. Trigger a Lock Event (Besu)
 Update the `besuBridgeAddress`.
 
-To simulate a token lock on Besu, run:
+To simulate token locking in Besu, open a new terminal and execute:
 
 ```bash
 npx hardhat run scripts/lockTokens.ts --network besu
