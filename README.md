@@ -1,7 +1,9 @@
 # zk-crosschain-besu-amoy
 
-This project is a **Proof of Concept (PoC)** for the research paper [_"Bridging Private & Public Blockchains: A zkSNARK Framework for Secure ERC-1155 Transfers"_](https://www.researchgate.net/publication/393057046_Bridging_Private_and_Public_Blockchains_A_zk-SNARK_Framework_for_Secure_ERC-1155_Transfers).  
+This project is a **Proof of Concept (PoC)** for the research paper [_"Bridging Private & Public Blockchains: A zkSNARK Framework for Secure ERC-1155 Transfers"_](https://www.researchgate.net/publication/393057046_Bridging_Private_and_Public_Blockchains_A_zk-SNARK_Framework_for_Secure_ERC-1155_Transfers).
+
 It demonstrates how **zero-knowledge proofs** can be used to securely bridge token transfers between a **private Hyperledger Besu network** and the **public Amoy testnet** using **zk-SNARKs**, **Merkle trees**, and **ERC-1155** tokens.
+
 ---
 
 ## Requirements
